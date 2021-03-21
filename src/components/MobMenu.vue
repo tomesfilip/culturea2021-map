@@ -1,12 +1,12 @@
 <template>
-  <nav id="mobile-menu" class="w-full h-screen px-6 py-4 bg-green overflow-hidden ">
+  <nav id="mobile-menu" class="w-full h-screen px-6 py-4 bg-green flex flex-col items-center justify-around overflow-hidden ">
     <SearchBar />
     <ul class="">
       <li class="menu-item-mob" v-for="(menuItem, title) in menuItems" :key="title">
         <a :href="menuItem.url" class="align-middle">{{ menuItem.title }}</a>
       </li>
     </ul>
-    <div class="flex">
+    <div class="flex justify-around w-24">
       <CloseBtn />
       <AboutBtn />
     </div>
