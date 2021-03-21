@@ -1,17 +1,18 @@
 <template>
-  <nav id="mobile-menu">
+  <nav id="mobile-menu" class="w-full h-screen px-6 py-4 bg-green overflow-hidden ">
     <SearchBar />
-    <ul class="w-full h-full px-6 py-4 bg-green overflow-hidden">
+    <ul class="">
       <li class="menu-item-mob" v-for="(menuItem, title) in menuItems" :key="title">
         <a :href="menuItem.url" class="align-middle">{{ menuItem.title }}</a>
       </li>
     </ul>
+    <div class="flex">
+      <CloseBtn />
+      <AboutBtn />
+    </div>
   </nav>
   
-  <div class="flex">
-    <CloseBtn />
-    <AboutBtn />
-  </div>
+  
 </template>
 <script>
 import SearchBar from './Searchbar.vue'

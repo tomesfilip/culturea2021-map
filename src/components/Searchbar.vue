@@ -1,13 +1,9 @@
 <template>
-  <div>
-    <input type="text" placeholder="Hledat...">
+  <div class="search-bar flex justify-between items-center pl-6 pr-2 rounded-full h-12 mb-8 bg-white">
+    <input type="text" name="search" placeholder="Hledat..." 
+      class="bg-none outline-none w-full pr-2 leading-10 placeholder-green placeholder-opacity-50">
+    <a class="search-btn h-10 flex justify-center items-center cursor-pointer">
+      <img src="../assets/img/search-button.svg" alt="search icon">
+    </a>
   </div>
 </template>
-<script>
-export default {
-  
-}
-</script>
-<style>
-  
-</style>
