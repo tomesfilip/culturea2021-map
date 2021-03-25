@@ -1,6 +1,7 @@
 <template>
-  <nav id="mobile-menu" class="w-full h-screen px-6 py-4 bg-green flex flex-col items-center justify-around overflow-hidden text-xl">
-    <SearchBar />
+  <nav id="mobile-menu" class="hidden px-6 py-4 bg-green overflow-hidden text-xl"
+    :class="{ 'flex flex-col items-center justify-around' : menuShowed }">
+    <MenuSearchBox />
     <ul class="menu-items w-full flex flex-col items-center text-white">
       <div class="menu-item-mob w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
         <li class="flex items-center h-20 my-4">
@@ -13,7 +14,7 @@
       
     </ul>
     <div class="flex justify-around w-24">
-      <CloseBtn />
+      <CloseBtn @click="closeMobMenu" />
       <AboutBtn />
     </div>
   </nav>
@@ -21,7 +22,7 @@
   
 </template>
 <script>
-import SearchBar from './Searchbar.vue'
+import MenuSearchBox from './MenuSearchBox.vue'
 import CloseBtn from './CloseButton.vue'
 import AboutBtn from './AboutButton.vue'
 
@@ -32,7 +33,7 @@ import HandIcon from '@/assets/img/hand.svg'
 import EyeIcon from '@/assets/img/eye.svg'
 
 export default {
-  components: { SearchBar, CloseBtn, AboutBtn },
+  components: { MenuSearchBox, CloseBtn, AboutBtn },
   data() {
     return {
       menuItems: [
@@ -67,7 +68,13 @@ export default {
           title: 'Tradiční jídlo',
           isLast: true
         },
-      ]
+      ],
+      menuShowed: false,
+    }
+  },
+  methods: {
+    closeMobMenu() {
+      this.menuShowed = false
     }
   }
 }

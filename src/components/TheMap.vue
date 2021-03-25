@@ -1,12 +1,15 @@
 <template>
   <div id="mapContainer" class="basemap"></div>
+  <MapSearchBox class="absolute top-10 right-10 " />
 </template>
 
 <script>
 import mapboxgl from 'mapbox-gl'
+import MapSearchBox from './MapSearchBox.vue'
 
 export default {
   name: "BaseMap",
+  components: { MapSearchBox },
   data() {
     return {
       accessToken: process.env.VUE_APP_MAPBOX_KEY,
@@ -14,6 +17,7 @@ export default {
       map: null,
       titleLayer: null,
       layers: [],
+      isMob: true,
     }
   },
   methods: {
@@ -31,12 +35,30 @@ export default {
           [17.9, 49.3],
         ],
       })
+    },
+    addControlsToMap() {
+      const nav = new mapboxgl.NavigationControl()
+      const geoLocate = new mapboxgl.GeolocateControl({
+        positionOptions: {
+          enableHighAccurracy: true
+        },
+        trackUserLocation: true
+      })
+      const position = this.isMobWidth() ? "bottom-left" : "top-right"
+      this.map.addControl(nav, position)
+      this.map.addControl(geoLocate, position)
+    },
+
+    isMobWidth() {
+      return (window.innerWidth < 768)
     }
+    
+
   },
   mounted() {
-    this.initMap()
-    const nav = new mapboxgl.NavigationControl();
-    this.map.addControl(nav, "top-right");
+    this.isMobWidth()
+    this.initMap()    
+    this.addControlsToMap()
   }
   
 }
@@ -46,5 +68,8 @@ export default {
   .basemap {
     width: 100%;
     height: 100vh;
+  }
+  .mapboxgl-ctrl-bottom-left {
+    bottom: 30px;
   }
 </style>

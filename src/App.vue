@@ -1,6 +1,6 @@
 <template>
   <MobMenu />
-  <!-- <TheMap /> -->
+  <TheMap />
 </template>
 
 <script>
