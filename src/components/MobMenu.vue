@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="menuShowed" id="mobile-menu" class="h-screen flex flex-col items-center justify-around px-6 py-4 bg-green overflow-hidden text-xl">
+  <nav id="mobile-menu" class="h-screen flex flex-col items-center justify-around px-6 py-4 bg-green overflow-hidden text-xl">
     <MenuSearchBox />
     <ul class="menu-items w-full flex flex-col items-center text-white">
       <div class="menu-item-mob w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
@@ -8,7 +8,7 @@
       </div>      
     </ul>
     <div class="flex justify-around w-24">
-      <CloseBtn @click="closeMobMenu" />
+      <CloseBtn />
     </div>
   </nav>
 </template>
@@ -24,6 +24,7 @@ import HandIcon from '@/assets/img/hand.svg'
 import EyeIcon from '@/assets/img/eye.svg'
 
 export default {
+  name: "MobMenu",
   components: { MenuSearchBox, MobMenuItem, CloseBtn },
   data() {
     return {
@@ -60,7 +61,6 @@ export default {
           isLast: true
         },
       ],
-      menuShowed: false,
     }
   },
   methods: {

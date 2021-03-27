@@ -1,7 +1,21 @@
 <template>
-  <div id="mapContainer" class="basemap"></div>
-  <MobMapHeader class="absolute top-10" />
-  <HamburgerBtn class="absolute bottom-10 ml-6 mb-7" />
+  <nav v-show="menuShowed" id="mobile-menu" class="h-screen flex flex-col items-center justify-around px-6 py-4 bg-green overflow-hidden text-xl">
+    <MenuSearchBox />
+    <ul class="menu-items w-full flex flex-col items-center text-white">
+      <div class="menu-item-mob w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
+        <MobMenuItem :menuItem="menuItem" />
+        <hr class="border-t-2 rounded" v-if="!menuItem.isLast">
+      </div>      
+    </ul>
+    <div class="flex justify-around w-24">
+      <CloseBtn @click="menuShowed = false" />
+    </div>
+  </nav>
+  <div v-show="!menuShowed" class="base">
+    <div id="mapContainer" class="basemap"></div>
+    <MobMapHeader class="absolute top-10" />
+    <HamburgerBtn @click="menuShowed = true" class="absolute bottom-10 ml-6 mb-7" />
+  </div>
 </template>
 
 <script>
@@ -9,15 +23,59 @@ import mapboxgl from 'mapbox-gl'
 import MobMapHeader from './MobMapHeader.vue'
 import HamburgerBtn from './HamburgerButton.vue'
 
+import MenuSearchBox from './MenuSearchBox.vue'
+import MobMenuItem from './MobMenuItem.vue'
+import CloseBtn from './CloseButton.vue'
+
+import CutleryIcon from '@/assets/img/cutlery.svg'
+import FlowerIcon from '@/assets/img/flower.svg'
+import MessageIcon from '@/assets/img/message.svg'
+import HandIcon from '@/assets/img/hand.svg'
+import EyeIcon from '@/assets/img/eye.svg'
+
 export default {
   name: "BaseMap",
-  components: { MobMapHeader, HamburgerBtn },
+  components: { MobMapHeader, HamburgerBtn, MenuSearchBox, MobMenuItem, CloseBtn },
 
   data() {
     return {
       accessToken: process.env.VUE_APP_MAPBOX_KEY,
       map: null,
       isMob: true,
+      menuShowed: false,
+      menuItems: [
+        {
+          url: '#',
+          icon: FlowerIcon,
+          iconName: 'flower icon',
+          title: 'Výstavy',
+        },
+        {
+          url: '#',
+          icon: MessageIcon,
+          iconName: 'message icon',
+          title: 'Přednášky',
+        },
+        {
+          url: '#',
+          icon: HandIcon,
+          iconName: 'hand icon',
+          title: 'Tipy',
+        },
+        {
+          url: '#',
+          icon: EyeIcon,
+          iconName: 'eye icon',
+          title: 'Kulturní akce',
+        },
+        {
+          url: '#',
+          icon: CutleryIcon,
+          iconName: 'cutlery icon',
+          title: 'Tradiční jídlo',
+          isLast: true
+        },
+      ],
     }
   },
 
@@ -51,7 +109,7 @@ export default {
     },
     isMobWidth() {
       return (window.innerWidth < 768)
-    }
+    },
   },
 
   mounted() {

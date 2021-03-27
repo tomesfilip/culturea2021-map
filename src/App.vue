@@ -1,17 +1,15 @@
 <template>
-  <MobMenu />
   <TheMap />
 </template>
 
 <script>
 import TheMap from './components/TheMap.vue'
-import MobMenu from './components/MobMenu.vue'
 import MapItemDetail from './components/MapItemDetail.vue'
 
 export default {
   name: 'App',
   components: {
-    TheMap, MobMenu, MapItemDetail
+    TheMap, MapItemDetail
   }
 }
 </script>
