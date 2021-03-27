@@ -1,15 +1,17 @@
 <template>
   <div id="mapContainer" class="basemap"></div>
   <MobMapHeader class="absolute top-10" />
+  <HamburgerBtn class="absolute bottom-10 ml-6 mb-7" />
 </template>
 
 <script>
 import mapboxgl from 'mapbox-gl'
 import MobMapHeader from './MobMapHeader.vue'
+import HamburgerBtn from './HamburgerButton.vue'
 
 export default {
   name: "BaseMap",
-  components: { MobMapHeader },
+  components: { MobMapHeader, HamburgerBtn },
 
   data() {
     return {
@@ -43,7 +45,7 @@ export default {
         },
         trackUserLocation: true
       })
-      const position = this.isMobWidth() ? "bottom-left" : "top-right"
+      const position = this.isMobWidth() ? "top-left" : "top-right"
       this.map.addControl(nav, position)
       this.map.addControl(geoLocate, position)
     },
@@ -65,12 +67,12 @@ export default {
     width: 100%;
     height: 100vh;
 
-    .mapboxgl-ctrl-bottom-left {
-      bottom: 30px;
+    .mapboxgl-ctrl-top-left {
+      top: 66%;
     }
 
     .mapboxgl-ctrl-group {
-      margin-left: 1.4rem;
+      margin-left: 1.5rem;
       background: none;
       box-shadow: none;
 
@@ -79,14 +81,15 @@ export default {
       }
 
       button {
-        width: 2rem;
-        height: 2rem;
+        width: 3rem;
+        height: 3rem;
         margin-bottom: 0.2rem;
         background: black;
+        border-radius: 100%;
 
         &:not(:disabled):hover {
+          border-radius: 100%;
           background: black;
-          border-radius: 0;
         }
 
         .mapboxgl-ctrl-icon {
@@ -102,9 +105,11 @@ export default {
         }
 
         button {
-          width: 3rem;
-          height: 3rem;
           margin-bottom: 0.6rem;
+
+          &:not(:disabled):hover {
+            border-radius: 0;
+          }
         }
       }
     }
