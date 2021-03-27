@@ -10,16 +10,15 @@ import MapSearchBox from './MapSearchBox.vue'
 export default {
   name: "BaseMap",
   components: { MapSearchBox },
+
   data() {
     return {
       accessToken: process.env.VUE_APP_MAPBOX_KEY,
-      center: [37,7749, -122,4194],
       map: null,
-      titleLayer: null,
-      layers: [],
       isMob: true,
     }
   },
+
   methods: {
     initMap() {
       mapboxgl.accessToken = this.accessToken
@@ -31,8 +30,8 @@ export default {
         minZoom: 13,
         maxZoom: 18,
         maxBounds: [
-          [17.3, 49.0],
-          [17.9, 49.3],
+          [17.600, 49.190],
+          [17.748, 49.260],
         ],
       })
     },
@@ -48,28 +47,53 @@ export default {
       this.map.addControl(nav, position)
       this.map.addControl(geoLocate, position)
     },
-
     isMobWidth() {
       return (window.innerWidth < 768)
     }
-    
-
   },
+
   mounted() {
     this.isMobWidth()
     this.initMap()    
     this.addControlsToMap()
   }
-  
 }
 </script>
 
-<style>
+<style lang="scss">
   .basemap {
     width: 100%;
     height: 100vh;
-  }
-  .mapboxgl-ctrl-bottom-left {
-    bottom: 30px;
+
+    .mapboxgl-ctrl-bottom-left {
+      bottom: 30px;
+    }
+
+    .mapboxgl-ctrl-group {
+      margin: 2rem;
+      background: none;
+      box-shadow: none;
+
+      button {
+        background: black;
+
+        &:not(:disabled):hover {
+          background: black;
+          border-radius: 0;
+        }
+
+        .mapboxgl-ctrl-icon {
+          filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(37deg) brightness(105%) contrast(101%);
+        }
+      }
+
+      @media screen and(min-width: 768px) {
+        button {
+          width: 3rem;
+          height: 3rem;
+          margin-bottom: 0.6rem;
+        }
+      }
+    }
   }
 </style>
