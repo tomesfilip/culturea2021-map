@@ -1,15 +1,15 @@
 <template>
   <div id="mapContainer" class="basemap"></div>
-  <MapSearchBox class="block w-2/3 md:hidden absolute top-10 right-10 " />
+  <MobMapHeader class="absolute top-10" />
 </template>
 
 <script>
 import mapboxgl from 'mapbox-gl'
-import MapSearchBox from './MapSearchBox.vue'
+import MobMapHeader from './MobMapHeader.vue'
 
 export default {
   name: "BaseMap",
-  components: { MapSearchBox },
+  components: { MobMapHeader },
 
   data() {
     return {
