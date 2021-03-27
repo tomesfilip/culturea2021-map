@@ -4,7 +4,7 @@
     <input type="text" name="search" placeholder="Hledat..." 
       class="bg-oliveGreen outline-none w-full pr-2 leading-10 placeholder-white placeholder-opacity-80">
     <a class="search-btn h-10 flex justify-center items-center cursor-pointer">
-      <img src="../assets/img/search-button.svg" alt="lupa ikona">
+      <img src="../assets/img/search-btn-icon.svg" alt="lupa ikona">
     </a>
   </div>
 </div>  

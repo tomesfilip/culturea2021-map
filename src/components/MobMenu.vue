@@ -3,7 +3,7 @@
     <MenuSearchBox />
     <ul class="menu-items w-full flex flex-col items-center text-white">
       <div class="menu-item-mob w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
-        <MobMenuItem :menuItem="menuItem" />
+        <MenuItem :menuItem="menuItem" />
         <hr class="border-t-2 rounded" v-if="!menuItem.isLast">
       </div>      
     </ul>
@@ -14,7 +14,7 @@
 </template>
 <script>
 import MenuSearchBox from './MenuSearchBox.vue'
-import MobMenuItem from './MobMenuItem.vue'
+import MenuItem from './MenuItem.vue'
 import CloseBtn from './CloseButton.vue'
 
 import CutleryIcon from '@/assets/img/cutlery.svg'
@@ -25,7 +25,7 @@ import EyeIcon from '@/assets/img/eye.svg'
 
 export default {
   name: "MobMenu",
-  components: { MenuSearchBox, MobMenuItem, CloseBtn },
+  components: { MenuSearchBox, MenuItem, CloseBtn },
   data() {
     return {
       menuItems: [

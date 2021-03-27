@@ -1,9 +1,9 @@
 <template>
-  <nav v-show="menuShowed" id="mobile-menu" class="h-screen flex flex-col items-center justify-around px-6 py-4 bg-green overflow-hidden text-xl">
+  <nav v-show="menuShowed" id="mobile-menu" class="h-screen flex md:hidden flex-col items-center justify-around px-6 py-4 bg-green overflow-hidden text-xl">
     <MenuSearchBox />
     <ul class="menu-items w-full flex flex-col items-center text-white">
       <div class="menu-item-mob w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
-        <MobMenuItem :menuItem="menuItem" />
+        <MenuItem :menuItem="menuItem" />
         <hr class="border-t-2 rounded" v-if="!menuItem.isLast">
       </div>      
     </ul>
@@ -11,10 +11,11 @@
       <CloseBtn @click="menuShowed = false" />
     </div>
   </nav>
-  <div v-show="!menuShowed" class="base">
-    <div id="mapContainer" class="basemap"></div>
+  <SidebarMenu class="fixed z-20" :menuItems="menuItems" />
+  <div v-show="!menuShowed">
+    <div id="mapContainer" class="basemap absolute"></div>
     <MobMapHeader class="absolute top-10" />
-    <HamburgerBtn @click="menuShowed = true" class="absolute bottom-10 ml-6 mb-7" />
+    <HamburgerBtn @click="menuShowed = true" class="block md:hidden absolute bottom-10 ml-6 mb-7" />
   </div>
 </template>
 
@@ -23,8 +24,10 @@ import mapboxgl from 'mapbox-gl'
 import MobMapHeader from './MobMapHeader.vue'
 import HamburgerBtn from './HamburgerButton.vue'
 
+import SidebarMenu from './SidebarMenu.vue'
+
 import MenuSearchBox from './MenuSearchBox.vue'
-import MobMenuItem from './MobMenuItem.vue'
+import MenuItem from './MenuItem.vue'
 import CloseBtn from './CloseButton.vue'
 
 import CutleryIcon from '@/assets/img/cutlery.svg'
@@ -35,7 +38,7 @@ import EyeIcon from '@/assets/img/eye.svg'
 
 export default {
   name: "BaseMap",
-  components: { MobMapHeader, HamburgerBtn, MenuSearchBox, MobMenuItem, CloseBtn },
+  components: { SidebarMenu, MobMapHeader, HamburgerBtn, MenuSearchBox, MenuItem, CloseBtn },
 
   data() {
     return {
@@ -163,6 +166,7 @@ export default {
         }
 
         button {
+          border-radius: 0;
           margin-bottom: 0.6rem;
 
           &:not(:disabled):hover {
