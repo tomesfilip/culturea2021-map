@@ -1,6 +1,6 @@
 <template>
   <div id="mapContainer" class="basemap"></div>
-  <MapSearchBox class="absolute top-10 right-10 " />
+  <MapSearchBox class="block w-2/3 md:hidden absolute top-10 right-10 " />
 </template>
 
 <script>
@@ -70,11 +70,18 @@ export default {
     }
 
     .mapboxgl-ctrl-group {
-      margin: 2rem;
+      margin-left: 1.4rem;
       background: none;
       box-shadow: none;
 
+      .mapboxgl-ctrl-zoom-in, .mapboxgl-ctrl-zoom-out {
+        display: none;
+      }
+
       button {
+        width: 2rem;
+        height: 2rem;
+        margin-bottom: 0.2rem;
         background: black;
 
         &:not(:disabled):hover {
@@ -88,6 +95,12 @@ export default {
       }
 
       @media screen and(min-width: 768px) {
+        margin: 2rem;
+
+        .mapboxgl-ctrl-zoom-in, .mapboxgl-ctrl-zoom-out {
+          display: block;
+        }
+
         button {
           width: 3rem;
           height: 3rem;
