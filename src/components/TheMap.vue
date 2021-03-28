@@ -127,7 +127,7 @@ export default {
     height: 100vh;
 
     .mapboxgl-ctrl-top-left {
-      top: 66%;
+      top: 56%;
     }
 
     .mapboxgl-ctrl-group {
