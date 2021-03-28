@@ -1,15 +1,13 @@
 <template>
-  <nav v-show="menuShowed" id="mobile-menu" class="h-screen flex md:hidden flex-col items-center justify-around px-6 py-4 bg-green overflow-hidden text-xl">
+  <nav v-show="menuShowed" id="mobile-menu" class="h-screen flex md:hidden flex-col items-center px-2 mobile:px-6 py-4 bg-green overflow-x-hidden text-xl">
     <MenuSearchBox />
     <ul class="menu-items w-full flex flex-col items-center text-white">
-      <div class="menu-item-mob w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
+      <div class="menu-item-mob w-4/5 mobile:w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
         <MenuItem :menuItem="menuItem" />
         <hr class="border-t-2 rounded" v-if="!menuItem.isLast">
       </div>      
     </ul>
-    <div class="flex justify-around w-24">
-      <CloseBtn @click="menuShowed = false" />
-    </div>
+    <CloseBtn class="p-2" @click="menuShowed = false" />
   </nav>
   <SidebarMenu class="fixed z-20" :menuItems="menuItems" />
   <div v-show="!menuShowed">
