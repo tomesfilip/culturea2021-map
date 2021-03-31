@@ -1,9 +1,9 @@
 <template>
-  <li class="flex items-center h-14 my-4">
+  <a :href="menuItem.url" class="flex items-center">
     <img :src="menuItem.icon" :alt="menuItem.iconName" class="pr-4">
-    <a :href="menuItem.url" class="align-middle pr-4">{{ menuItem.title }}</a>
+    <p class="align-middle pr-4">{{ menuItem.title }}</p>
     <img src="../assets/img/white-arrow.svg" alt="white arrow">
-  </li>
+  </a>
 </template>
 <script>
 export default {
