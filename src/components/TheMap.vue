@@ -88,13 +88,14 @@ export default {
       this.map = new mapboxgl.Map({
         container: "mapContainer",
         style: "mapbox://styles/f-tomes/ckl27l6x413dx17mvv50wti7j",
-        center: [17.674, 49.225],
+        center: [17.6670, 49.2257],
         zoom: 13,
         minZoom: 13,
         maxZoom: 18,
+        // max boundaries: 1. value: south-west coordinates, 2. value: north-east coordinates
         maxBounds: [
-          [17.600, 49.190],
-          [17.748, 49.260],
+          [17.6205, 49.2090],
+          [17.7190, 49.2465],
         ],
       })
     },
