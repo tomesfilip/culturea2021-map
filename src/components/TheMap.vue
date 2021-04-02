@@ -3,11 +3,12 @@
     <MenuSearchBox class="h-1/6 max-h-16" />
     <MobMenuItems :menuItems="menuItems" />    
     <div class="close-btn h-1/6">
-      <CloseBtn class="p-2" @click="menuShowed=false" />
+      <CloseBtn class="p-2" @click="menuShowed=false"/>
     </div>
   </nav>
   <SidebarMenu class="fixed z-20" :menuItems="menuItems" />
   <div v-show="!menuShowed">
+    <MarkerDetail v-if="mapItem" :mapItem="mapItem" class="fixed bottom-0 z-20"/>  
     <div id="mapContainer" class="basemap absolute"></div>
     <MobMapHeader class="absolute top-10" />
     <HamburgerBtn @click="menuShowed=true" class="block md:hidden absolute bottom-10 ml-6 mb-7" />
@@ -27,6 +28,7 @@ import MenuSearchBox from './MenuSearchBox.vue'
 import MobMenuItems from './MobMenuItems.vue'
 import CloseBtn from './CloseButton.vue'
 import MenuItem from './MenuItem.vue'
+import MarkerDetail from './MarkerDetail.vue'
 
 import CutleryIcon from '@/assets/img/cutlery.svg'
 import FlowerIcon from '@/assets/img/flower.svg'
@@ -36,7 +38,7 @@ import EyeIcon from '@/assets/img/eye.svg'
 
 export default {
   name: "BaseMap",
-  components: { MenuItem, SidebarMenu, MobMenuItems, MobMapHeader, HamburgerBtn, MenuSearchBox, CloseBtn },
+  components: { MenuItem, SidebarMenu, MobMenuItems, MobMapHeader, HamburgerBtn, MenuSearchBox, CloseBtn, MarkerDetail },
 
   data() {
     return {
@@ -45,6 +47,7 @@ export default {
       map: null,
       isMob: true,
       menuShowed: false,
+      mapItem: null,
       mapFeatures: [],
       menuItems: [
         {
@@ -89,7 +92,7 @@ export default {
         container: "mapContainer",
         style: "mapbox://styles/f-tomes/ckl27l6x413dx17mvv50wti7j",
         center: [17.6670, 49.2257],
-        zoom: 13,
+        zoom: 14,
         minZoom: 13,
         maxZoom: 18,
         // max boundaries: 1. value: south-west coordinates, 2. value: north-east coordinates
@@ -128,16 +131,19 @@ export default {
     isMobWidth() {
       return (window.innerWidth < 768)
     },
-    addMarkerToMap(feature) {
+    async addMarkerToMap(feature) {
       const el = document.createElement('div')
       el.className = 'marker'
       if(feature.geometry.type === 'Point') {
         el.classList.add('marker-restaurant')
       }
       const coords = feature.geometry.coordinates
-      const marker = new mapboxgl.Marker(el)
+      const marker = await new mapboxgl.Marker(el)
         .setLngLat([coords[0], coords[1]])
         .addTo(this.map)
+      marker.getElement().addEventListener('click', () => {
+        this.mapItem = feature
+      })
     }
   },
 
@@ -160,33 +166,38 @@ export default {
     width: 100%;
     height: 100vh;
 
+    .marker-restaurant {
+      background-image: url('../assets/img/markers/restaurant.svg');
+    }
+
+    .marker-message {
+      background-image: url('../assets/img/markers/message.svg');
+    }
+
+    .marker-hand {
+      background-image: url('../assets/img/markers/hand.svg');
+    }
+
+    .marker-eye {
+      background-image: url('../assets/img/markers/eye.svg');
+    }
+
+    .marker-smell {
+      background-image: url('../assets/img/markers/smell.svg');
+    }
+
     .marker {
       background-size: contain;
       width: 50px;
       height: 50px;
       cursor: pointer;
-      background-image: url('../assets/img/markers/restaurant.svg');
 
-      .marker-restaurant {
-        background-image: url('../assets/img/markers/restaurant.svg');
-      }
-
-      .marker-message {
-        background-image: url('../assets/img/markers/message.svg');
-      }
-
-      .marker-hand {
-        background-image: url('../assets/img/markers/hand.svg');
-      }
-
-      .marker-eye {
-        background-image: url('../assets/img/markers/eye.svg');
-      }
-
-      .marker-smell {
-        background-image: url('../assets/img/markers/smell.svg');
+      .marker-active {
+        filter: invert(0%) sepia(100%) saturate(7441%) hue-rotate(177deg) brightness(111%) contrast(116%);
       }
     }
+
+    
 
     .mapboxgl-ctrl-top-left {
       top: unset;
