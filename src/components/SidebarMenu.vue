@@ -7,20 +7,16 @@
       <BackToHomeLink :class="{ 'mb-6' : !isOpened }" :isActive="isOpened"/>
       <SearchBtn :isActive="isOpened" />
     </ul>
-    <ul class="menu-items text-white" :class="{ showed: isOpened }">
-      <div class="menu-item-mob w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
-        <MenuItem :menuItem="menuItem" class="h-16 my-4" />
-      </div>
-    </ul>
+    <SidebarItems :menuItems="menuItems" :isOpened="isOpened"/>
   </nav>
 </template>
 <script>
-import MenuItem from './MenuItem.vue'
+import SidebarItems from './SidebarItems.vue'
 import BackToHomeLink from './BackToHomeLink.vue'
 import SearchBtn from './SearchButton.vue'
 
 export default {
-  components: { MenuItem, BackToHomeLink, SearchBtn },
+  components: { SidebarItems, BackToHomeLink, SearchBtn },
   props: ['menuItems'],
   data() {
     return {
@@ -40,7 +36,7 @@ export default {
 <style lang="scss">
   .sidebar-menu {
     width: 8rem;
-    transition: all 0.4s;
+    transition: all 0.4s ease-in-out;
     &.showed {
       width: 18rem;
       background: #1BB36C;
@@ -56,18 +52,5 @@ export default {
         justify-content: space-around;
       }      
     }
-
-    .menu-items {
-        visibility: hidden;
-        display: none;
-        width: 100%;
-        flex-direction: column;
-        align-items: center;
-        transition: all 0.4s ease-in 2s;
-        &.showed {
-          display: flex;
-          visibility: visible;
-        }
-      }
   }
 </style>

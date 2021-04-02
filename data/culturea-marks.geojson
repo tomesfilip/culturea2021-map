@@ -1,0 +1,59 @@
+{
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Výloha kultury zemí Polska a Íránu - AR realita",
+        "detail_text": "Na první pohled plakát, na pohled přes aplikaci Artivive je to okno do jiné kultury. Které se vám líbí víc - Polsko či Írán?",
+        "icons": "[eyeIcon]",
+        "date": "9. - 11. 4. (pátek, sobota, neděle)",
+        "place_name": "Pekařství Javor na Školní"
+      },
+      "geometry": {
+        "coordinates": [
+          17.666124,
+          49.223901
+        ],
+        "type": "Point"
+      },
+      "id": "address.7507909915735930"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Íránská vitráž",
+        "detail_text": "Během pití kvalitní kávy si vychutnáte i pohled na smyslovou instalaci z dílny studentů FMK, Univerzity Tomáše Bati. Navíc máte možnost vyhrát lístky od Flixbusu do Polska a zpátky v hodnotě 2 000 CZK. Stačí se vyfotit u této instalace, fotku přidat do příběhu na Instagram a označit nás tam.",
+        "icons": "[eyeIcon]",
+        "date": "9. - 11. 4. (pátek, sobota, neděle)",
+        "place_name": "Kafec Zlínský"
+      },
+      "geometry": {
+        "coordinates": [
+          17.663155,
+          49.220812
+        ],
+        "type": "Point"
+      },
+      "id": "becbb25a64c2921e6ce29795be5cc746"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Culturea menu v Prašade",
+        "detail_text": "Navařit si íránské jídlo je bez potřebných surovin celkem výzva.  Šafrán nebo bryndza  pravděpodobně není běžnou součástí vaší spíže.  Naštěstí vám to s láskou připraví v Prašádu a vaše kuchyň tak zůstane čistá.  Rovněž si můžete objednat i polské speciality! Všechny verze jídel jsou vegetariánské. Jídla budou v nabídce pouze během festivalu.",
+        "icons": "[tasteIcon, smellIcon, handIcon]",
+        "date": "9. - 11. 4. (pátek, sobota, neděle)",
+        "place_name": "Restaurace Prašád"
+      },
+      "geometry": {
+        "coordinates": [
+          17.658398,
+          49.224014
+        ],
+        "type": "Point"
+      },
+      "id": "eca0c641f33e40d37385a6d27009d6c1"
+    }
+  ],
+  "type": "FeatureCollection"
+}

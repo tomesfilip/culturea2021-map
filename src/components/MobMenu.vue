@@ -1,14 +1,14 @@
 <template>
-  <nav id="mobile-menu" class="h-screen flex flex-col items-center justify-around px-6 py-4 bg-green overflow-hidden text-xl">
-    <MenuSearchBox />
-    <ul class="menu-items w-full flex flex-col items-center text-white">
-      <div class="menu-item-mob w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
-        <MenuItem :menuItem="menuItem" />
+  <nav v-show="menuShowed" id="mobile-menu" class="h-screen flex md:hidden flex-col items-center px-2 mobile:px-6 py-4 bg-green overflow-x-hidden text-xl">
+    <MenuSearchBox class="h-1/6 max-h-16" />
+    <ul class="menu-items w-full h-full mt-4 mobile:mt-6 flex flex-col items-center text-white">
+      <div class="menu-item-mob w-4/5 mobile:w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
+        <MenuItem :menuItem="menuItem" class="h-12 sm-mobile:h-16 my-4" />
         <hr class="border-t-2 rounded" v-if="!menuItem.isLast">
       </div>      
     </ul>
-    <div class="flex justify-around w-24">
-      <CloseBtn />
+    <div class="close-btn h-1/6">
+      <CloseBtn class="p-2" @click="menuShowed=false" />
     </div>
   </nav>
 </template>
@@ -17,52 +17,11 @@ import MenuSearchBox from './MenuSearchBox.vue'
 import MenuItem from './MenuItem.vue'
 import CloseBtn from './CloseButton.vue'
 
-import CutleryIcon from '@/assets/img/cutlery.svg'
-import FlowerIcon from '@/assets/img/flower.svg'
-import MessageIcon from '@/assets/img/message.svg'
-import HandIcon from '@/assets/img/hand.svg'
-import EyeIcon from '@/assets/img/eye.svg'
-
 export default {
   name: "MobMenu",
   components: { MenuSearchBox, MenuItem, CloseBtn },
-  data() {
-    return {
-      menuItems: [
-        {
-          url: '#',
-          icon: FlowerIcon,
-          iconName: 'flower icon',
-          title: 'Výstavy',
-        },
-        {
-          url: '#',
-          icon: MessageIcon,
-          iconName: 'message icon',
-          title: 'Přednášky',
-        },
-        {
-          url: '#',
-          icon: HandIcon,
-          iconName: 'hand icon',
-          title: 'Tipy',
-        },
-        {
-          url: '#',
-          icon: EyeIcon,
-          iconName: 'eye icon',
-          title: 'Kulturní akce',
-        },
-        {
-          url: '#',
-          icon: CutleryIcon,
-          iconName: 'cutlery icon',
-          title: 'Tradiční jídlo',
-          isLast: true
-        },
-      ],
-    }
-  },
+  props: ['menuItems', 'menuShowed'],
+  
   methods: {
     closeMobMenu() {
       this.menuShowed = false
