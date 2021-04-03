@@ -8,14 +8,16 @@
   </nav>
   <SidebarMenu class="fixed z-20" :menuItems="menuItems" />
   <div v-show="!menuShowed">
-    <MarkerDetail v-if="mapItem" :mapItem="mapItem" class="fixed bottom-0 z-20" @click="toggleActiveMarker" :class="{ 'marker-active' : isActive}">
-      <template v-slot:mobCloseBtn>
-        <CloseBtn class="h-12 w-12" @click="mapItem=null" />
-      </template>
-      <template v-slot:closeBtn>
-        <CloseBtn @click="mapItem=null" />
-      </template>
-    </MarkerDetail>  
+    <transition name="fade-bottom">
+      <MarkerDetail v-if="mapItem" :mapItem="mapItem" class="fixed bottom-0 z-20">
+        <template v-slot:mobCloseBtn>
+          <CloseBtn class="h-12 w-12" @click="mapItem=null" />
+        </template>
+        <template v-slot:closeBtn>
+          <CloseBtn @click="mapItem=null" class="close-btn"/>
+        </template>
+      </MarkerDetail>  
+    </transition>
     <div id="mapContainer" class="basemap absolute"></div>
     <MobMapHeader class="absolute top-10" />
     <HamburgerBtn @click="menuShowed=true" class="block md:hidden absolute bottom-10 ml-6 mb-7" />
@@ -53,7 +55,6 @@ export default {
       datasetID: 'cklfg01lb0ctb2amxveaqgpcf',
       map: null,
       isMob: true,
-      isActive: false,
       menuShowed: false,
       mapItem: null,
       mapFeatures: [],
@@ -160,9 +161,6 @@ export default {
         this.mapItem = feature
 
       })
-    },
-    toggleActiveMarker() {
-      this.isActive = !this.isActive
     }
   },
 
@@ -179,6 +177,29 @@ export default {
 </script>
 
 <style lang="scss">
+  .fade-bottom-enter-active, .fade-bottom-leave-active {
+    transition: all 0.4s ease;
+  }
+
+  .fade-bottom-leave-active {
+    transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+  }
+
+  .fade-bottom-enter-from, .fade-bottom-leave-to {
+    transform: translateY(130%);
+    opacity: 0;
+  }
+
+  .close-btn {
+    img {
+      transition: transform .2s;
+
+      &:hover {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
   .basemap {
     width: 100%;
     height: 100vh;
@@ -208,10 +229,18 @@ export default {
     }
 
     .marker {
-      background-size: contain;
+      background-size: cover;
+      background-position: center;
       width: 50px;
       height: 50px;
       cursor: pointer;
+      transition: background-image .3s;
+      transition: width, height .2s ease;
+
+      &:hover {
+        width: 70px;
+        height: 70px;
+      }
     }
 
     .mapboxgl-ctrl-top-left {
