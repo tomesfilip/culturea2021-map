@@ -1,12 +1,22 @@
 <template>
   <nav v-show="menuShowed" id="mobile-menu" class="h-screen flex md:hidden flex-col items-center px-2 mobile:px-6 py-4 bg-green overflow-x-hidden text-xl">
-    <MenuSearchBox class="h-1/6 max-h-16" />
     <MobMenuItems :menuItems="menuItems" />    
     <div class="close-btn h-1/6">
       <CloseBtn class="p-2" @click="menuShowed=false"/>
     </div>
   </nav>
-  <SidebarMenu class="fixed z-20" :menuItems="menuItems" />
+  <transition name="fade-left">
+    <SidebarMenu class="fixed z-20" :menuItems="menuItems">
+      <template v-slot:removeFiltersBtn>
+        <button class="bg-white rounded-full py-2 px-4 text-green hover:opacity-90" @click="showAllMarkers">smazat filtry</button>
+      </template>
+      <template v-slot:menuItem>
+        <div class="menu-item-mob w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
+          <MenuItem :menuItem="menuItem" class="h-16 my-4 hover:opacity-90" @click="showOnly(menuItem.sense)"/>
+        </div>
+      </template>
+    </SidebarMenu>
+  </transition>  
   <div v-show="!menuShowed">
     <transition name="fade-bottom">
       <MarkerDetail v-if="mapItem" :mapItem="mapItem" class="fixed bottom-0 z-20">
@@ -21,9 +31,6 @@
     <div id="mapContainer" class="basemap absolute"></div>
     <MobMapHeader class="absolute top-10" />
     <HamburgerBtn @click="menuShowed=true" class="block md:hidden absolute bottom-10 ml-6 mb-7" />
-    <div v-for="feature in mapFeatures" :key="feature.id">
-      <p>{{ feature.geometry.coordinates }}</p>
-    </div>
   </div>
 </template>
 
@@ -64,30 +71,35 @@ export default {
           icon: FlowerIcon,
           iconName: 'flower icon',
           title: 'Výstavy',
+          sense: 'cuch'
         },
         {
           url: '#',
           icon: MessageIcon,
           iconName: 'message icon',
           title: 'Přednášky',
+          sense: 'sluch'
         },
         {
           url: '#',
           icon: HandIcon,
           iconName: 'hand icon',
           title: 'Tipy',
+          sense: 'hmat'
         },
         {
           url: '#',
           icon: EyeIcon,
           iconName: 'eye icon',
           title: 'Kulturní akce',
+          sense: 'zrak'
         },
         {
           url: '#',
           icon: CutleryIcon,
           iconName: 'cutlery icon',
           title: 'Tradiční jídlo',
+          sense: 'chut',
           isLast: true
         },
       ],
@@ -143,24 +155,110 @@ export default {
     async addMarkerToMap(feature) {
       const el = document.createElement('div')
       el.className = 'marker'
-      if(feature.geometry.type === 'Point') {
+      const elems = document.getElementsByClassName('marker')
+
+      if(feature.properties.sense === 'chut') {
         el.classList.add('marker-restaurant')
         el.addEventListener('click', () => {
-          const elems = document.getElementsByClassName('marker-restaurant')
           for(let i = 0; i < elems.length; i++) {
             elems[i].classList.remove('marker-restaurant-active')
+            elems[i].classList.remove('marker-smell-active')
+            elems[i].classList.remove('marker-eye-active')
           }      
           el.classList.add('marker-restaurant-active')
         })
       }
+
+      if(feature.properties.sense === 'cuch') {
+        el.classList.add('marker-smell')
+        el.addEventListener('click', () => {
+          for(let i = 0; i < elems.length; i++) {
+            elems[i].classList.remove('marker-restaurant-active')
+            elems[i].classList.remove('marker-smell-active')
+            elems[i].classList.remove('marker-eye-active')
+          }      
+          el.classList.add('marker-smell-active')
+        })
+      }
+
+      if(feature.properties.sense === 'zrak') {
+        el.classList.add('marker-eye')
+        el.addEventListener('click', () => {
+          for(let i = 0; i < elems.length; i++) {
+            elems[i].classList.remove('marker-restaurant-active')
+            elems[i].classList.remove('marker-smell-active')
+            elems[i].classList.remove('marker-eye-active')
+          }      
+          el.classList.add('marker-eye-active')
+        })
+      }
+
       const coords = feature.geometry.coordinates
       const marker = await new mapboxgl.Marker(el)
         .setLngLat([coords[0], coords[1]])
         .addTo(this.map)
+
       marker.getElement().addEventListener('click', () => {
         this.mapItem = feature
-
       })
+    },
+    showOnly(itemSense) {
+      const markers = document.getElementsByClassName('marker')
+      switch(itemSense) {
+        case 'chut':
+          for(let i = 0; i < markers.length; i++) {
+            markers[i].classList.remove('hidden')
+            if (!markers[i].classList.contains('marker-restaurant')) {
+              markers[i].classList.add('hidden')
+            }
+          }
+          break
+        
+        case 'cuch':
+          for(let i = 0; i < markers.length; i++) {
+            markers[i].classList.remove('hidden')
+            if (!markers[i].classList.contains('marker-smell')) {
+              markers[i].classList.add('hidden')
+            }
+          }
+          break
+        
+        case 'hmat':
+          for(let i = 0; i < markers.length; i++) {
+            markers[i].classList.remove('hidden')
+            if (!markers[i].classList.contains('marker-hand')) {
+              markers[i].classList.add('hidden')
+            }
+          }
+          break
+
+        case 'sluch':
+          for(let i = 0; i < markers.length; i++) {
+            markers[i].classList.remove('hidden')
+            if (!markers[i].classList.contains('marker-message')) {
+              markers[i].classList.add('hidden')
+            }
+          }
+          break
+
+        case 'zrak':
+          for(let i = 0; i < markers.length; i++) {
+            markers[i].classList.remove('hidden')
+            if (!markers[i].classList.contains('marker-eye')) {
+              markers[i].classList.add('hidden')
+            }
+          }
+          break
+
+        default:
+          console.error('unknown item sense')        
+      }
+    },
+    showAllMarkers() {
+      const markers = document.getElementsByClassName('marker')
+      for(let i = 0; i < markers.length; i++) {
+        markers[i].classList.remove('hidden')
+      }
     }
   },
 
@@ -177,16 +275,21 @@ export default {
 </script>
 
 <style lang="scss">
-  .fade-bottom-enter-active, .fade-bottom-leave-active {
+  .fade-bottom-enter-active, .fade-bottom-leave-active, .fade-left-enter-active, .fade-left-leave-active {
     transition: all 0.4s ease;
   }
 
-  .fade-bottom-leave-active {
+  .fade-bottom-leave-active, .fade-left-leave-active {
     transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
   }
 
   .fade-bottom-enter-from, .fade-bottom-leave-to {
     transform: translateY(130%);
+    opacity: 0;
+  }
+
+  .fade-left-enter-from, .fade-left-leave-to {
+    transform: translateX(-130%);
     opacity: 0;
   }
 
@@ -216,16 +319,32 @@ export default {
       background-image: url('../assets/img/markers/message.svg');
     }
 
+    .marker-message-active {
+      background-image: url('../assets/img/markers/message-active.svg');
+    }
+
     .marker-hand {
       background-image: url('../assets/img/markers/hand.svg');
+    }
+
+    .marker-hand-active {
+      background-image: url('../assets/img/markers/hand-active.svg');
     }
 
     .marker-eye {
       background-image: url('../assets/img/markers/eye.svg');
     }
 
+    .marker-eye-active {
+      background-image: url('../assets/img/markers/eye-active.svg');
+    }
+
     .marker-smell {
       background-image: url('../assets/img/markers/smell.svg');
+    }
+
+    .marker-smell-active {
+      background-image: url('../assets/img/markers/smell-active.svg');
     }
 
     .marker {

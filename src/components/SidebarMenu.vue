@@ -3,21 +3,22 @@
     @mouseenter="openSideMenu" @mouseleave="closeSideMenu"
     class="hidden md:flex flex-col items-center sidebar-menu h-screen bg-oliveGreen"
     :class="{ showed : isOpened }">
-    <ul class="sidebar-menu-header w-full flex h-1/4" :class="{ showed : isOpened }">
-      <BackToHomeLink :class="{ 'mb-6' : !isOpened }" :isActive="isOpened"/>
-      <SearchBtn :isActive="isOpened" />
+    <ul class="sidebar-menu-header w-full flex h-40" :class="{ showed : isOpened }">
+      <BackToHomeLink :isActive="isOpened"/>
+    </ul>    
+    <div class="remove-filter-btn" :class="{ showed : isOpened }">
+      <slot name="removeFiltersBtn"></slot>
+    </div>
+    <ul class="menu-items w-full flex flex-col justify-center items-center text-white" :class="{ showed : isOpened }">
+      <slot name="menuItem"></slot>
     </ul>
-    <SidebarItems :menuItems="menuItems" :isOpened="isOpened"/>
   </nav>
 </template>
 <script>
-import SidebarItems from './SidebarItems.vue'
 import BackToHomeLink from './BackToHomeLink.vue'
-import SearchBtn from './SearchButton.vue'
 
 export default {
-  components: { SidebarItems, BackToHomeLink, SearchBtn },
-  props: ['menuItems'],
+  components: { BackToHomeLink },
   data() {
     return {
       isOpened: false,
@@ -46,11 +47,24 @@ export default {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      transition: all 0.4s;
+    }
+
+    .remove-filter-btn {
+      opacity: 0;
+      transition: opacity 0.2s;
       &.showed {
-        flex-direction: row;
-        justify-content: space-around;
-      }      
+        opacity: 1;
+      }
+    }
+
+    .menu-items {
+      transition: transform .3s, opacity 1s;
+      opacity: 0;
+      transform: translateX(-150%);
+      &.showed {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
   }
 </style>
