@@ -8,7 +8,7 @@
   </nav>
   <SidebarMenu class="fixed z-20" :menuItems="menuItems" />
   <div v-show="!menuShowed">
-    <MarkerDetail v-if="mapItem" :mapItem="mapItem" class="fixed bottom-0 z-20">
+    <MarkerDetail v-if="mapItem" :mapItem="mapItem" class="fixed bottom-0 z-20" @click="toggleActiveMarker" :class="{ 'marker-active' : isActive}">
       <template v-slot:mobCloseBtn>
         <CloseBtn class="h-12 w-12" @click="mapItem=null" />
       </template>
@@ -53,6 +53,7 @@ export default {
       datasetID: 'cklfg01lb0ctb2amxveaqgpcf',
       map: null,
       isMob: true,
+      isActive: false,
       menuShowed: false,
       mapItem: null,
       mapFeatures: [],
@@ -143,6 +144,13 @@ export default {
       el.className = 'marker'
       if(feature.geometry.type === 'Point') {
         el.classList.add('marker-restaurant')
+        el.addEventListener('click', () => {
+          const elems = document.getElementsByClassName('marker-restaurant')
+          for(let i = 0; i < elems.length; i++) {
+            elems[i].classList.remove('marker-restaurant-active')
+          }      
+          el.classList.add('marker-restaurant-active')
+        })
       }
       const coords = feature.geometry.coordinates
       const marker = await new mapboxgl.Marker(el)
@@ -150,7 +158,11 @@ export default {
         .addTo(this.map)
       marker.getElement().addEventListener('click', () => {
         this.mapItem = feature
+
       })
+    },
+    toggleActiveMarker() {
+      this.isActive = !this.isActive
     }
   },
 
@@ -175,6 +187,10 @@ export default {
       background-image: url('../assets/img/markers/restaurant.svg');
     }
 
+    .marker-restaurant-active {
+      background-image: url('../assets/img/markers/restaurant-active.svg');
+    }
+
     .marker-message {
       background-image: url('../assets/img/markers/message.svg');
     }
@@ -196,13 +212,7 @@ export default {
       width: 50px;
       height: 50px;
       cursor: pointer;
-
-      .marker-active {
-        filter: invert(0%) sepia(100%) saturate(7441%) hue-rotate(177deg) brightness(111%) contrast(116%);
-      }
     }
-
-    
 
     .mapboxgl-ctrl-top-left {
       top: unset;
