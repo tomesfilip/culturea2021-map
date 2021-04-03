@@ -3,7 +3,7 @@
     <div class="p-4 flex w-full h-full flex-col lg:flex-row text-center lg:text-left text-white lg:text-black">
       <h4 class="w-4/5 lg:w-1/6 mr-0 lg:mr-8 uppercase font-heading text-white lg:text-green self-start md:self-auto text-lg mobile:text-xl text-left">{{ mapItem.properties.name }}</h4>
       <div class="block lg:hidden close-btn fixed right-6 top-10">
-        <CloseBtn class="h-12 w-12" />
+        <slot name="mobCloseBtn"></slot>
       </div>
       <div class="map-item-detail w-full lg:w-4/6 h-5/6 lg:h-full flex flex-col justify-evenly">
         <div class="text flex mb-0 lg:mb-4 flex-col lg:flex-row">
@@ -20,17 +20,15 @@
         </div>
       </div>
       <div class="hidden lg:block close-btn fixed lg:right-10 bottom-24">
-        <CloseBtn />
+        <slot name="closeBtn"></slot>
       </div>
     </div>    
   </div>
 </template>
 <script>
-import CloseBtn from './CloseButton.vue'
 
 export default {
   props: ['mapItem'],
-  components: { CloseBtn }
 }
 </script>
 <style>

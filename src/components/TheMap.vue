@@ -8,7 +8,14 @@
   </nav>
   <SidebarMenu class="fixed z-20" :menuItems="menuItems" />
   <div v-show="!menuShowed">
-    <MarkerDetail v-if="mapItem" :mapItem="mapItem" class="fixed bottom-0 z-20"/>  
+    <MarkerDetail v-if="mapItem" :mapItem="mapItem" class="fixed bottom-0 z-20">
+      <template v-slot:mobCloseBtn>
+        <CloseBtn class="h-12 w-12" @click="mapItem=null" />
+      </template>
+      <template v-slot:closeBtn>
+        <CloseBtn @click="mapItem=null" />
+      </template>
+    </MarkerDetail>  
     <div id="mapContainer" class="basemap absolute"></div>
     <MobMapHeader class="absolute top-10" />
     <HamburgerBtn @click="menuShowed=true" class="block md:hidden absolute bottom-10 ml-6 mb-7" />
@@ -156,8 +163,6 @@ export default {
     this.initMap()    
     this.addControlsToMap()
   }
-
-
 }
 </script>
 
