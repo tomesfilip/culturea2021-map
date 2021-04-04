@@ -49,7 +49,6 @@ import MobMapHeader from './MobMapHeader.vue'
 import HamburgerBtn from './HamburgerButton.vue'
 import SidebarMenu from './SidebarMenu.vue'
 import MobMenu from './MobMenu.vue'
-import MenuSearchBox from './MenuSearchBox.vue'
 import CloseBtn from './CloseButton.vue'
 import MenuItem from './MenuItem.vue'
 import MarkerDetail from './MarkerDetail.vue'
@@ -62,7 +61,7 @@ import EyeIcon from '@/assets/img/eye.svg'
 
 export default {
   name: "BaseMap",
-  components: { MenuItem, SidebarMenu, MobMenu, MobMapHeader, HamburgerBtn, MenuSearchBox, CloseBtn, MarkerDetail },
+  components: { MenuItem, SidebarMenu, MobMenu, MobMapHeader, HamburgerBtn, CloseBtn, MarkerDetail },
 
   data() {
     return {

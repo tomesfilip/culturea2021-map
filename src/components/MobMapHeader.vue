@@ -1,14 +1,12 @@
 <template>
-  <div class="mob-map-header flex justify-around items-center md:hidden w-full">
+  <div class="mob-map-header flex justify-center items-center md:hidden w-1/3">
     <BackToHomeLink />
-    <MapSearchBox class="w-2/3" />    
   </div>
 </template>
 <script>
 import BackToHomeLink from './BackToHomeLink.vue'
-import MapSearchBox from './MapSearchBox.vue'
 
 export default {
-  components: { BackToHomeLink, MapSearchBox }
+  components: { BackToHomeLink }
 }
 </script>
