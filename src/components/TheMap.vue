@@ -1,10 +1,18 @@
 <template>
-  <nav v-show="menuShowed" id="mobile-menu" class="h-screen flex md:hidden flex-col items-center px-2 mobile:px-6 py-4 bg-green overflow-x-hidden text-xl">
-    <MobMenuItems :menuItems="menuItems" />    
-    <div class="close-btn h-1/6">
-      <CloseBtn class="p-2" @click="menuShowed=false"/>
-    </div>
-  </nav>
+  <MobMenu v-show="menuShowed">
+    <template v-slot:removeFiltersMobBtn>
+      <button class="bg-white rounded-full py-2 px-4 text-green hover:opacity-90" @click="showAllMarkers">smazat filtry</button>
+    </template>
+    <template v-slot:menuItem>
+      <div class="menu-item-mob w-4/5 mobile:w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
+        <MenuItem :menuItem="menuItem" class="h-12 sm-mobile:h-16 my-4" @click="showOnly(menuItem.sense)" />
+        <hr class="border-t-2 rounded" v-if="!menuItem.isLast">
+      </div>
+    </template>
+    <template v-slot:mobMenuCloseBtn>
+      <CloseBtn class="p-2" @click="menuShowed=false" />
+    </template>
+  </MobMenu>
   <transition name="fade-left">
     <SidebarMenu class="fixed z-20" :menuItems="menuItems">
       <template v-slot:removeFiltersBtn>
@@ -40,8 +48,8 @@ import mapboxgl from 'mapbox-gl'
 import MobMapHeader from './MobMapHeader.vue'
 import HamburgerBtn from './HamburgerButton.vue'
 import SidebarMenu from './SidebarMenu.vue'
+import MobMenu from './MobMenu.vue'
 import MenuSearchBox from './MenuSearchBox.vue'
-import MobMenuItems from './MobMenuItems.vue'
 import CloseBtn from './CloseButton.vue'
 import MenuItem from './MenuItem.vue'
 import MarkerDetail from './MarkerDetail.vue'
@@ -54,7 +62,7 @@ import EyeIcon from '@/assets/img/eye.svg'
 
 export default {
   name: "BaseMap",
-  components: { MenuItem, SidebarMenu, MobMenuItems, MobMapHeader, HamburgerBtn, MenuSearchBox, CloseBtn, MarkerDetail },
+  components: { MenuItem, SidebarMenu, MobMenu, MobMapHeader, HamburgerBtn, MenuSearchBox, CloseBtn, MarkerDetail },
 
   data() {
     return {
@@ -204,6 +212,7 @@ export default {
     },
     showOnly(itemSense) {
       const markers = document.getElementsByClassName('marker')
+      this.menuShowed = false
       switch(itemSense) {
         case 'chut':
           for(let i = 0; i < markers.length; i++) {
@@ -256,6 +265,7 @@ export default {
     },
     showAllMarkers() {
       const markers = document.getElementsByClassName('marker')
+      this.menuShowed = false
       for(let i = 0; i < markers.length; i++) {
         markers[i].classList.remove('hidden')
       }
