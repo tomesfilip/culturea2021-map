@@ -1,7 +1,9 @@
 <template>
   <MobMenu v-show="menuShowed">
     <template v-slot:removeFiltersMobBtn>
-      <button class="bg-white rounded-full py-2 px-4 text-green hover:opacity-90" @click="showAllMarkers">smazat filtry</button>
+      <transition name="fade-bottom">
+        <RemoveFiltersBtn v-show="isFiltered" @click="showAllMarkers" />
+      </transition>
     </template>
     <template v-slot:menuItem>
       <div class="menu-item-mob w-4/5 mobile:w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
@@ -16,10 +18,12 @@
   <transition name="fade-left">
     <SidebarMenu class="fixed z-20" :menuItems="menuItems">
       <template v-slot:removeFiltersBtn>
-        <button class="bg-white rounded-full py-2 px-4 text-green hover:opacity-90" @click="showAllMarkers">smazat filtry</button>
+        <transition name="fade-left">
+          <RemoveFiltersBtn v-show="isFiltered" @click="showAllMarkers" />
+        </transition>
       </template>
       <template v-slot:menuItem>
-        <div class="menu-item-mob w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
+        <div class="menu-item w-3/4" v-for="(menuItem, title) in menuItems" :key="title">
           <MenuItem :menuItem="menuItem" class="h-16 my-4 hover:opacity-90" @click="showOnly(menuItem.sense)"/>
         </div>
       </template>
@@ -38,7 +42,7 @@
     </transition>
     <div id="mapContainer" class="basemap absolute"></div>
     <MobMapHeader class="absolute top-10" />
-    <HamburgerBtn @click="menuShowed=true" class="block md:hidden absolute bottom-10 ml-6 mb-7" />
+    <HamburgerBtn @click="menuShowed=true" class="block md:hidden absolute bottom-10 ml-6 my-7" />
   </div>
 </template>
 
@@ -52,6 +56,7 @@ import MobMenu from './MobMenu.vue'
 import CloseBtn from './CloseButton.vue'
 import MenuItem from './MenuItem.vue'
 import MarkerDetail from './MarkerDetail.vue'
+import RemoveFiltersBtn from './RemoveFiltersBtn.vue'
 
 import CutleryIcon from '@/assets/img/cutlery.svg'
 import FlowerIcon from '@/assets/img/flower.svg'
@@ -61,16 +66,16 @@ import EyeIcon from '@/assets/img/eye.svg'
 
 export default {
   name: "BaseMap",
-  components: { MenuItem, SidebarMenu, MobMenu, MobMapHeader, HamburgerBtn, CloseBtn, MarkerDetail },
+  components: { MenuItem, SidebarMenu, MobMenu, MobMapHeader, HamburgerBtn, CloseBtn, MarkerDetail, RemoveFiltersBtn },
 
   data() {
     return {
       accessToken: process.env.VUE_APP_MAPBOX_KEY,
       datasetID: 'cklfg01lb0ctb2amxveaqgpcf',
       map: null,
-      isMob: true,
       menuShowed: false,
       mapItem: null,
+      isFiltered: false,
       mapFeatures: [],
       menuItems: [
         {
@@ -169,6 +174,8 @@ export default {
         el.addEventListener('click', () => {
           for(let i = 0; i < elems.length; i++) {
             elems[i].classList.remove('marker-restaurant-active')
+            elems[i].classList.remove('marker-hand-active')
+            elems[i].classList.remove('marker-message-active')
             elems[i].classList.remove('marker-smell-active')
             elems[i].classList.remove('marker-eye-active')
           }      
@@ -181,10 +188,40 @@ export default {
         el.addEventListener('click', () => {
           for(let i = 0; i < elems.length; i++) {
             elems[i].classList.remove('marker-restaurant-active')
+            elems[i].classList.remove('marker-hand-active')
+            elems[i].classList.remove('marker-message-active')
             elems[i].classList.remove('marker-smell-active')
             elems[i].classList.remove('marker-eye-active')
           }      
           el.classList.add('marker-smell-active')
+        })
+      }
+
+      if(feature.properties.sense === 'hmat') {
+        el.classList.add('marker-hand')
+        el.addEventListener('click', () => {
+          for(let i = 0; i < elems.length; i++) {
+            elems[i].classList.remove('marker-restaurant-active')
+            elems[i].classList.remove('marker-hand-active')
+            elems[i].classList.remove('marker-message-active')
+            elems[i].classList.remove('marker-smell-active')
+            elems[i].classList.remove('marker-eye-active')
+          }      
+          el.classList.add('marker-hand-active')
+        })
+      }
+
+      if(feature.properties.sense === 'sluch') {
+        el.classList.add('marker-message')
+        el.addEventListener('click', () => {
+          for(let i = 0; i < elems.length; i++) {
+            elems[i].classList.remove('marker-restaurant-active')
+            elems[i].classList.remove('marker-hand-active')
+            elems[i].classList.remove('marker-message-active')
+            elems[i].classList.remove('marker-smell-active')
+            elems[i].classList.remove('marker-eye-active')
+          }      
+          el.classList.add('marker-message-active')
         })
       }
 
@@ -193,6 +230,8 @@ export default {
         el.addEventListener('click', () => {
           for(let i = 0; i < elems.length; i++) {
             elems[i].classList.remove('marker-restaurant-active')
+            elems[i].classList.remove('marker-hand-active')
+            elems[i].classList.remove('marker-message-active')
             elems[i].classList.remove('marker-smell-active')
             elems[i].classList.remove('marker-eye-active')
           }      
@@ -212,6 +251,7 @@ export default {
     showOnly(itemSense) {
       const markers = document.getElementsByClassName('marker')
       this.menuShowed = false
+      this.isFiltered = true
       switch(itemSense) {
         case 'chut':
           for(let i = 0; i < markers.length; i++) {
@@ -265,6 +305,7 @@ export default {
     showAllMarkers() {
       const markers = document.getElementsByClassName('marker')
       this.menuShowed = false
+      this.isFiltered = false
       for(let i = 0; i < markers.length; i++) {
         markers[i].classList.remove('hidden')
       }

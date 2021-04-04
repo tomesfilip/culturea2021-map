@@ -5,11 +5,11 @@
     :class="{ showed : isOpened }">
     <ul class="sidebar-menu-header w-full flex h-40" :class="{ showed : isOpened }">
       <BackToHomeLink :isActive="isOpened"/>
-    </ul>    
-    <div class="remove-filter-btn" :class="{ showed : isOpened }">
-      <slot name="removeFiltersBtn"></slot>
-    </div>
+    </ul>        
     <ul class="menu-items w-full flex flex-col justify-center items-center text-white" :class="{ showed : isOpened }">
+      <div class="remove-filter-btn">
+        <slot name="removeFiltersBtn"></slot>
+      </div>
       <slot name="menuItem"></slot>
     </ul>
   </nav>
@@ -47,14 +47,6 @@ export default {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-    }
-
-    .remove-filter-btn {
-      opacity: 0;
-      transition: opacity 0.2s;
-      &.showed {
-        opacity: 1;
-      }
     }
 
     .menu-items {
