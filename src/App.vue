@@ -4,12 +4,11 @@
 
 <script>
 import TheMap from './components/TheMap.vue'
-import MapItemDetail from './components/MapItemDetail.vue'
 
 export default {
   name: 'App',
   components: {
-    TheMap, MapItemDetail
+    TheMap
   }
 }
 </script>
@@ -21,6 +20,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  overflow: hidden;
 }
 </style>

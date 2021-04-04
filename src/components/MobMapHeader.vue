@@ -1,5 +1,5 @@
 <template>
-  <div class="mob-map-header flex justify-center items-center md:hidden w-1/3">
+  <div class="mob-map-header flex justify-center items-center md:hidden w-24">
     <BackToHomeLink />
   </div>
 </template>

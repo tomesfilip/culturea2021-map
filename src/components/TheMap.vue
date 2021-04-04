@@ -1,5 +1,5 @@
 <template>
-  <MobMenu v-show="menuShowed">
+  <MobMenu v-show="menuShowed" class="fixed bottom-0 z-40">
     <template v-slot:removeFiltersMobBtn>
       <transition name="fade-bottom">
         <RemoveFiltersBtn v-show="isFiltered" @click="showAllMarkers" />
@@ -31,7 +31,7 @@
   </transition>  
   <div v-show="!menuShowed">
     <transition name="fade-bottom">
-      <MarkerDetail v-if="mapItem" :mapItem="mapItem" class="fixed bottom-0 z-20">
+      <MarkerDetail v-if="mapItem" :mapItem="mapItem" class="fixed bottom-0 z-40">
         <template v-slot:mobCloseBtn>
           <CloseBtn class="h-12 w-12" @click="mapItem=null" />
         </template>
@@ -40,9 +40,9 @@
         </template>
       </MarkerDetail>  
     </transition>
-    <div id="mapContainer" class="basemap absolute"></div>
-    <MobMapHeader class="absolute top-10" />
-    <HamburgerBtn @click="menuShowed=true" class="block md:hidden absolute bottom-10 ml-6 my-7" />
+    <div id="mapContainer" class="basemap absolute z-10"></div>
+    <MobMapHeader class="fixed top-14 z-20" />
+    <HamburgerBtn @click="menuShowed=true" class="block md:hidden fixed bottom-10 ml-6 my-7 z-20" />
   </div>
 </template>
 
@@ -355,7 +355,7 @@ export default {
 
   .basemap {
     width: 100%;
-    height: 100vh;
+    height: 100%;
 
     .marker-restaurant {
       background-image: url('../assets/img/markers/restaurant.svg');
@@ -413,16 +413,7 @@ export default {
     }
 
     .mapboxgl-ctrl-top-left {
-      top: unset;
-      bottom: 23vh;
-
-      @media screen and(min-width: 374px) {
-        bottom: 19vh;
-      }
-
-      @media screen and(min-width: 413px) {
-        bottom: 17vh;
-      }
+      top: 50%;
     }
 
     .mapboxgl-ctrl-group {

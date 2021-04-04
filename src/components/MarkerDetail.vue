@@ -5,7 +5,7 @@
       <div class="block lg:hidden close-btn fixed right-6 top-10">
         <slot name="mobCloseBtn"></slot>
       </div>
-      <div class="map-item-detail w-full lg:w-4/6 h-5/6 lg:h-full flex flex-col justify-evenly">
+      <div class="map-item-detail w-full lg:w-4/6 h-5/6 mt-8 lg:h-full flex flex-col justify-evenly">
         <div class="text flex mb-0 lg:mb-4 flex-col lg:flex-row">
           <p class="mr-0 lg:mr-2 uppercase mobile:text-lg lg:text-base font-bold">detail</p>
           <p>{{ mapItem.properties.detail_text }}</p>
