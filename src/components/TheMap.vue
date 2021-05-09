@@ -152,7 +152,7 @@ export default {
         const res = await fetch(`https://api.mapbox.com/datasets/v1/f-tomes/${this.datasetID}/features?access_token=${this.accessToken}`)
         const data = await res.json()
         const features = data.features
-        this.mapFeatures = features
+        this.mapFeatures = data.features
         features.forEach((feature) => {
           this.addMarkerToMap(feature)
         })
@@ -164,34 +164,51 @@ export default {
     isMobWidth() {
       return (window.innerWidth < 768)
     },
+    getMarkerElementClass(itemSense) {
+      switch(itemSense) {
+        case 'chut':
+          return 'marker-restaurant'
+        case 'cuch':
+          return 'marker-smell'
+        case 'hmat':
+          return 'marker-hand'
+        case 'sluch':
+          return 'marker-message'
+        case 'zrak':
+          return 'marker-eye'
+        default:
+          console.error('unknown item sense')   
+      }
+    },
     async addMarkerToMap(feature) {
       const el = document.createElement('div')
       el.className = 'marker'
-      const elems = document.getElementsByClassName('marker')
-
+      const markerElements =document.getElementsByClassName('marker')
       if(feature.properties.sense === 'chut') {
         el.classList.add('marker-restaurant')
         el.addEventListener('click', () => {
-          for(let i = 0; i < elems.length; i++) {
-            elems[i].classList.remove('marker-restaurant-active')
-            elems[i].classList.remove('marker-hand-active')
-            elems[i].classList.remove('marker-message-active')
-            elems[i].classList.remove('marker-smell-active')
-            elems[i].classList.remove('marker-eye-active')
+          for(let i = 0; i < markerElements.length; i++) {
+            markerElements[i].classList.remove('marker-restaurant-active', 'marker-hand-active', 'marker-message-active', 'marker-smell-active', 'marker-eye-active')
           }      
           el.classList.add('marker-restaurant-active')
+        })
+      }
+
+      if(feature.properties.sense === 'zrak') {
+        el.classList.add('marker-eye')
+        el.addEventListener('click', () => {
+          for(let i = 0; i < markerElements.length; i++) {
+            markerElements[i].classList.remove('marker-restaurant-active', 'marker-hand-active', 'marker-message-active', 'marker-smell-active', 'marker-eye-active')
+          }      
+          el.classList.add('marker-eye-active')
         })
       }
 
       if(feature.properties.sense === 'cuch') {
         el.classList.add('marker-smell')
         el.addEventListener('click', () => {
-          for(let i = 0; i < elems.length; i++) {
-            elems[i].classList.remove('marker-restaurant-active')
-            elems[i].classList.remove('marker-hand-active')
-            elems[i].classList.remove('marker-message-active')
-            elems[i].classList.remove('marker-smell-active')
-            elems[i].classList.remove('marker-eye-active')
+          for(let i = 0; i < markerElements.length; i++) {
+            markerElements[i].classList.remove('marker-restaurant-active', 'marker-hand-active', 'marker-message-active', 'marker-smell-active', 'marker-eye-active')
           }      
           el.classList.add('marker-smell-active')
         })
@@ -200,12 +217,8 @@ export default {
       if(feature.properties.sense === 'hmat') {
         el.classList.add('marker-hand')
         el.addEventListener('click', () => {
-          for(let i = 0; i < elems.length; i++) {
-            elems[i].classList.remove('marker-restaurant-active')
-            elems[i].classList.remove('marker-hand-active')
-            elems[i].classList.remove('marker-message-active')
-            elems[i].classList.remove('marker-smell-active')
-            elems[i].classList.remove('marker-eye-active')
+          for(let i = 0; i < markerElements.length; i++) {
+            markerElements[i].classList.remove('marker-restaurant-active', 'marker-hand-active', 'marker-message-active', 'marker-smell-active', 'marker-eye-active')
           }      
           el.classList.add('marker-hand-active')
         })
@@ -214,28 +227,10 @@ export default {
       if(feature.properties.sense === 'sluch') {
         el.classList.add('marker-message')
         el.addEventListener('click', () => {
-          for(let i = 0; i < elems.length; i++) {
-            elems[i].classList.remove('marker-restaurant-active')
-            elems[i].classList.remove('marker-hand-active')
-            elems[i].classList.remove('marker-message-active')
-            elems[i].classList.remove('marker-smell-active')
-            elems[i].classList.remove('marker-eye-active')
+          for(let i = 0; i < markerElements.length; i++) {
+            markerElements[i].classList.remove('marker-restaurant-active', 'marker-hand-active', 'marker-message-active', 'marker-smell-active', 'marker-eye-active')
           }      
           el.classList.add('marker-message-active')
-        })
-      }
-
-      if(feature.properties.sense === 'zrak') {
-        el.classList.add('marker-eye')
-        el.addEventListener('click', () => {
-          for(let i = 0; i < elems.length; i++) {
-            elems[i].classList.remove('marker-restaurant-active')
-            elems[i].classList.remove('marker-hand-active')
-            elems[i].classList.remove('marker-message-active')
-            elems[i].classList.remove('marker-smell-active')
-            elems[i].classList.remove('marker-eye-active')
-          }      
-          el.classList.add('marker-eye-active')
         })
       }
 
@@ -249,58 +244,22 @@ export default {
       })
     },
     showOnly(itemSense) {
-      const markers = document.getElementsByClassName('marker')
+      const markerElements = Array.prototype.slice.call(document.getElementsByClassName('marker'))
+      const itemSenseClass = this.getMarkerElementClass(itemSense)
       this.menuShowed = false
       this.isFiltered = true
-      switch(itemSense) {
-        case 'chut':
-          for(let i = 0; i < markers.length; i++) {
-            markers[i].classList.remove('hidden')
-            if (!markers[i].classList.contains('marker-restaurant')) {
-              markers[i].classList.add('hidden')
-            }
-          }
-          break
-        
-        case 'cuch':
-          for(let i = 0; i < markers.length; i++) {
-            markers[i].classList.remove('hidden')
-            if (!markers[i].classList.contains('marker-smell')) {
-              markers[i].classList.add('hidden')
-            }
-          }
-          break
-        
-        case 'hmat':
-          for(let i = 0; i < markers.length; i++) {
-            markers[i].classList.remove('hidden')
-            if (!markers[i].classList.contains('marker-hand')) {
-              markers[i].classList.add('hidden')
-            }
-          }
-          break
+      
+      const filteredMarkers = markerElements.filter((markerElement) => {
+        return !markerElement.classList.contains(itemSenseClass)
+      })
 
-        case 'sluch':
-          for(let i = 0; i < markers.length; i++) {
-            markers[i].classList.remove('hidden')
-            if (!markers[i].classList.contains('marker-message')) {
-              markers[i].classList.add('hidden')
-            }
-          }
-          break
+      markerElements.forEach((markerElement) => {
+        markerElement.classList.remove('hidden')
+      })
 
-        case 'zrak':
-          for(let i = 0; i < markers.length; i++) {
-            markers[i].classList.remove('hidden')
-            if (!markers[i].classList.contains('marker-eye')) {
-              markers[i].classList.add('hidden')
-            }
-          }
-          break
-
-        default:
-          console.error('unknown item sense')        
-      }
+      filteredMarkers.forEach((filteredMarker) => {
+        filteredMarker.classList.add('hidden')
+      })
     },
     showAllMarkers() {
       const markers = document.getElementsByClassName('marker')
