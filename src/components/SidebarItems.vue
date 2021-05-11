@@ -5,6 +5,7 @@
     </div>
   </ul>
 </template>
+
 <script>
 import MenuItem from './MenuItem.vue'
 

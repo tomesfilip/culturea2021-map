@@ -5,6 +5,7 @@
     <img src="../assets/img/white-arrow.svg" alt="white arrow" class="transition-transform" :class="{ 'transform translate-x-1.5': arrowHovered }">
   </button>
 </template>
+
 <script>
 export default {
   props: ['menuItem'],

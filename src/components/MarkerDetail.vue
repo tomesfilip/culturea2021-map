@@ -30,12 +30,9 @@
     </div>    
   </div>
 </template>
-<script>
 
+<script>
 export default {
   props: ['mapItem'],
 }
 </script>
-<style>
-  
-</style>

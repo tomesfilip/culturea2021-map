@@ -14,6 +14,7 @@
     </ul>
   </nav>
 </template>
+
 <script>
 import BackToHomeLink from './BackToHomeLink.vue'
 

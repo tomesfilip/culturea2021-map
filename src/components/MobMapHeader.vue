@@ -3,6 +3,7 @@
     <BackToHomeLink />
   </div>
 </template>
+
 <script>
 import BackToHomeLink from './BackToHomeLink.vue'
 

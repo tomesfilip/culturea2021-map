@@ -5,6 +5,7 @@
       <img v-else src="../assets/img/green-arrow.svg" alt="zelena sipka" class="transform rotate-180">
     </a>
 </template>
+
 <script>
 export default {
   props: ['isActive']
